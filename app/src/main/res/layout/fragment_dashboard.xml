@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.authority.DashboardFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Selector Row -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="1dp"
+            app:cardBackgroundColor="@color/surface"
+            app:strokeColor="@color/gray_border"
+            app:strokeWidth="1dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Select Area to Monitor &amp; Fuse"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="13sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_sectors"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@android:drawable/btn_dropdown" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_fuse"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:text="FUSE SIGNALS &amp; ANALYZE"
+                    app:backgroundTint="@color/secondary"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Loading State Indicator -->
+        <ProgressBar
+            android:id="@+id/progress_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_margin="24dp" />
+
+        <!-- Empty State View -->
+        <TextView
+            android:id="@+id/txt_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="No active incident analysis. Select an area above and click 'Fuse Signals &amp; Analyze' to trigger AI evaluation."
+            android:textColor="@color/gray_text"
+            android:textSize="13sp"
+            android:layout_margin="32dp" />
+
+        <!-- Incident Results Layout -->
+        <LinearLayout
+            android:id="@+id/layout_incident_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <!-- Severity Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeColor="@color/gray_border"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/txt_severity_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="HIGH SEVERITY"
+                            android:textColor="@color/white"
+                            android:background="@color/severity_high"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            android:textStyle="bold"
+                            android:textSize="12sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/txt_confidence_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Confidence: 95%"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="AI Severity Reasoning Trail"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/txt_reasoning"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="High confidence reasoning text"
+                        android:textColor="@color/gray_text"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Input Signals Badges Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Live Input Signals Fused"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_marginBottom="6dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_signals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Proposed AI Response Plan -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Proposed Coordinated Actions"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_marginBottom="6dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Human approval layer -->
+            <LinearLayout
+                android:id="@+id/layout_admin_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_approve"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="3"
+                    android:text="APPROVE &amp; EXECUTE"
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="8dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_override"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="2"
+                    android:layout_marginStart="8dp"
+                    android:text="OVERRIDE"
+                    android:textColor="@color/error"
+                    app:strokeColor="@color/error"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_resolve"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="MARK INCIDENT RESOLVED"
+                app:backgroundTint="@color/severity_low"
+                app:cornerRadius="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_view_map"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="VIEW TACTICAL RESPONSE MAP"
+                android:textColor="@color/primary"
+                app:strokeColor="@color/primary"
+                app:icon="@android:drawable/ic_menu_compass"
+                app:cornerRadius="8dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Visual Outcome Simulation Card -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Operational Outcome Simulation"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_marginBottom="6dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeColor="@color/gray_border"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Simulation Status Header -->
+                    <TextView
+                        android:id="@+id/txt_sim_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status: Pending Admin Approval"
+                        android:textStyle="bold"
+                        android:textColor="@color/error"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Grid Layout for Before vs After -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- Before Column -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:background="@color/severity_high_bg"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="BEFORE RESPONSE"
+                                android:textAlignment="center"
+                                android:textStyle="bold"
+                                android:textColor="@color/severity_high"
+                                android:textSize="11sp" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/gray_border"
+                                android:layout_marginVertical="4dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Traffic:"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/txt_before_traffic"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Heavy Congestion"
+                                android:textColor="@color/severity_high"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:text="Dispatch:"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/txt_before_dispatch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Idle"
+                                android:textColor="@color/severity_medium"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:text="Residents Alert:"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/txt_before_alerts"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="None Sent"
+                                android:textColor="@color/severity_medium"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <!-- Divider -->
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent" />
+
+                        <!-- After Column -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:background="@color/severity_low_bg"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="AFTER RESPONSE"
+                                android:textAlignment="center"
+                                android:textStyle="bold"
+                                android:textColor="@color/severity_low"
+                                android:textSize="11sp" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/gray_border"
+                                android:layout_marginVertical="4dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Traffic:"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/txt_after_traffic"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Normal"
+                                android:textColor="@color/severity_low"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:text="Dispatch:"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/txt_after_dispatch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="WASA En Route"
+                                android:textColor="@color/severity_low"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:text="Residents Alert:"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/txt_after_alerts"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sent"
+                                android:textColor="@color/severity_low"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

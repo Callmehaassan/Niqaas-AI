@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Stylized Water Droplet with Linear Gradient -->
+    <path
+        android:pathData="M54,22 C41.6,38 36,50.7 36,61.8 C36,72.9 44.1,81 54,81 C63.9,81 72,72.9 72,61.8 C72,50.7 66.4,38 54,22 Z">
+        <gradient
+            android:startX="54"
+            android:startY="22"
+            android:endX="54"
+            android:endY="81"
+            android:type="linear">
+            <item android:offset="0" android:color="#00E5FF" />
+            <item android:offset="1" android:color="#00838F" />
+        </gradient>
+    </path>
+    
+    <!-- Wave 1 representing drainage flow -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,56 C46,54 50,58 54,56 C58,54 62,58 66,56 L66,60 C62,62 58,58 54,60 C50,62 46,58 42,60 Z" />
+
+    <!-- Wave 2 representing drainage flow -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M44,66 C48,64 51,68 54,66 C57,64 60,68 64,66 L64,70 C60,72 57,68 54,70 C51,72 48,68 44,70 Z" />
+</vector>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Colors -->
+    <color name="primary">#00C2B2</color> <!-- Nikaas Teal -->
+    <color name="primary_variant">#00838F</color> <!-- Deep Teal -->
+    <color name="secondary">#00C2B2</color>
+    <color name="secondary_variant">#00838F</color>
+    <color name="background">#0B1F3A</color> <!-- Deep Blue Background -->
+    <color name="surface">#1E3248</color> <!-- Card surface -->
+    <color name="error">#E84040</color>
+
+    <!-- UI Accent Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#FFFFFF</color> <!-- Map black to white for dark theme readability -->
+    <color name="gray_light">#2A4060</color>
+    <color name="gray_text">#8899AA</color> <!-- Muted bluish-gray -->
+    <color name="gray_border">#2A4060</color>
+
+    <!-- Severity Indicator Colors -->
+    <color name="severity_low">#00C2B2</color>      <!-- Teal -->
+    <color name="severity_medium">#F5A623</color>   <!-- Amber -->
+    <color name="severity_high">#E84040</color>     <!-- Red -->
+    
+    <color name="severity_low_bg">#2000C2B2</color>
+    <color name="severity_medium_bg">#20F5A623</color>
+    <color name="severity_high_bg">#20E84040</color>
+</resources>
