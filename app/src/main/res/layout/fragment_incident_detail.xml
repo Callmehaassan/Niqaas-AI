@@ -63,6 +63,85 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <!-- Simulated Map Fallback View -->
+        <FrameLayout
+            android:id="@+id/layout_simulated_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#0F2544"
+            android:visibility="gone">
+
+            <!-- Grid Roads -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:background="#1E3248" />
+
+            <View
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:background="#1E3248" />
+
+            <!-- Flood Zone Polygon (translucent red) -->
+            <View
+                android:id="@+id/sim_flood_zone"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:background="@color/severity_high_bg" />
+
+            <!-- Alert Zone Circle (translucent teal) -->
+            <View
+                android:id="@+id/sim_alert_zone"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_indicator_filled"
+                android:alpha="0.15"
+                android:visibility="gone" />
+
+            <!-- Reroute Line (dashed teal) -->
+            <View
+                android:id="@+id/sim_reroute_line"
+                android:layout_width="240dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:background="@drawable/dashed_border"
+                android:visibility="gone" />
+
+            <!-- Pulsing Flood Point -->
+            <ImageView
+                android:id="@+id/sim_flood_marker"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_dialog_alert"
+                android:tint="@color/severity_high" />
+
+            <!-- WASA Truck Marker -->
+            <ImageView
+                android:id="@+id/sim_truck_marker"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="-40dp"
+                android:src="@android:drawable/ic_menu_compass"
+                android:tint="@color/severity_medium"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_margin="8dp"
+                android:text="[ Offline Simulated Map View ]"
+                android:textColor="@color/gray_text"
+                android:textSize="9sp" />
+        </FrameLayout>
+
         <!-- Floating before/after toggle card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="160dp"

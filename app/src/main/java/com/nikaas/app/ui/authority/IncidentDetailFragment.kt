@@ -23,6 +23,7 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
 
     private var googleMap: GoogleMap? = null
     private var isBeforeState = true
+    private var useSimulatedMap = false
 
     // G-10 Coordinates
     private val floodPoint = LatLng(33.6784, 72.9972)
@@ -53,13 +54,33 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize Map
-        binding.mapView.onCreate(savedInstanceState)
-        binding.mapView.getMapAsync(this)
+        // Check API Key to determine if we should fallback to offline simulated map
+        val mapsKey = getString(R.string.google_maps_key)
+        if (mapsKey == "YOUR_GOOGLE_MAPS_KEY_HERE" || mapsKey.startsWith("AQ.")) {
+            useSimulatedMap = true
+            binding.mapView.visibility = View.GONE
+            binding.layoutSimulatedMap.visibility = View.VISIBLE
+        } else {
+            useSimulatedMap = false
+            binding.mapView.visibility = View.VISIBLE
+            binding.layoutSimulatedMap.visibility = View.GONE
+            
+            // Initialize Live Map
+            try {
+                binding.mapView.onCreate(savedInstanceState)
+                binding.mapView.getMapAsync(this)
+            } catch (e: Exception) {
+                // Fallback to simulated map if Google Play Services is missing
+                useSimulatedMap = true
+                binding.mapView.visibility = View.GONE
+                binding.layoutSimulatedMap.visibility = View.VISIBLE
+            }
+        }
 
         setupToggleListeners()
         setupBackNavigation()
         updateUiState()
+        drawMapOverlays()
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -145,6 +166,25 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun drawMapOverlays() {
+        if (useSimulatedMap) {
+            if (isBeforeState) {
+                binding.simFloodZone.visibility = View.VISIBLE
+                binding.simFloodZone.alpha = 1.0f
+                binding.simFloodMarker.visibility = View.VISIBLE
+                binding.simAlertZone.visibility = View.GONE
+                binding.simRerouteLine.visibility = View.GONE
+                binding.simTruckMarker.visibility = View.GONE
+            } else {
+                binding.simFloodZone.visibility = View.VISIBLE
+                binding.simFloodZone.alpha = 0.4f // faded opacity
+                binding.simFloodMarker.visibility = View.GONE
+                binding.simAlertZone.visibility = View.VISIBLE
+                binding.simRerouteLine.visibility = View.VISIBLE
+                binding.simTruckMarker.visibility = View.VISIBLE
+            }
+            return
+        }
+
         val map = googleMap ?: return
         map.clear()
 
@@ -204,19 +244,44 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     // Lifecycles for Google MapView
+    override fun onStart() {
+        super.onStart()
+        if (_binding != null && !useSimulatedMap) {
+            binding.mapView.onStart()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        binding.mapView.onResume()
+        if (_binding != null && !useSimulatedMap) {
+            binding.mapView.onResume()
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        binding.mapView.onPause()
+        if (_binding != null && !useSimulatedMap) {
+            binding.mapView.onPause()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (_binding != null && !useSimulatedMap) {
+            binding.mapView.onStop()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (_binding != null && !useSimulatedMap) {
+            binding.mapView.onSaveInstanceState(outState)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (_binding != null) {
+        if (_binding != null && !useSimulatedMap) {
             binding.mapView.onDestroy()
         }
         _binding = null
@@ -224,6 +289,8 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
 
     override fun onLowMemory() {
         super.onLowMemory()
-        binding.mapView.onLowMemory()
+        if (_binding != null && !useSimulatedMap) {
+            binding.mapView.onLowMemory()
+        }
     }
 }
