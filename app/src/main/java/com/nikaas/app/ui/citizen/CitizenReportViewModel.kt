@@ -22,13 +22,13 @@ class CitizenReportViewModel(
         _reports.value = repository.getCitizenReports()
     }
 
-    fun submitReport(location: String, description: String) {
+    fun submitReport(location: String, description: String, imageBitmap: android.graphics.Bitmap?) {
         val report = CitizenReport(
             location = location,
             description = description,
             timestamp = System.currentTimeMillis()
         )
-        repository.submitCitizenReport(report)
+        repository.submitCitizenReport(report, imageBitmap)
         loadReports()
     }
 

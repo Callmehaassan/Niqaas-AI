@@ -7,13 +7,11 @@ import com.nikaas.app.data.model.CitizenReport
 import com.nikaas.app.databinding.ItemCitizenReportBinding
 import com.nikaas.app.ui.common.formatTime
 
+import coil.load
+
 class CitizenReportsAdapter(
     private var reports: List<CitizenReport> = emptyList()
 ) : RecyclerView.Adapter<CitizenReportsAdapter.ReportViewHolder>() {
-
-    companion object {
-        val attachedPhotos = HashMap<String, android.graphics.Bitmap>()
-    }
 
     fun updateData(newReports: List<CitizenReport>) {
         reports = newReports
@@ -44,12 +42,14 @@ class CitizenReportsAdapter(
             binding.txtDescription.text = report.description
             binding.txtTime.formatTime(report.timestamp)
 
-            val key = report.location + "_" + report.description
-            val bitmap = attachedPhotos[key]
-            if (bitmap != null) {
+            if (!report.photoUrl.isNullOrEmpty()) {
                 binding.imgPhotoIndicator.visibility = android.view.View.VISIBLE
                 binding.cardItemThumbnail.visibility = android.view.View.VISIBLE
-                binding.imgItemPhoto.setImageBitmap(bitmap)
+                binding.imgItemPhoto.load(report.photoUrl) {
+                    crossfade(true)
+                    placeholder(android.R.drawable.ic_menu_gallery)
+                    error(android.R.drawable.ic_menu_report_image)
+                }
             } else {
                 binding.imgPhotoIndicator.visibility = android.view.View.GONE
                 binding.cardItemThumbnail.visibility = android.view.View.GONE

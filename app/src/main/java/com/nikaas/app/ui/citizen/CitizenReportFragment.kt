@@ -157,11 +157,8 @@ class CitizenReportFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            // Cache the attached photo if any
+            // Extract the attached photo bitmap if any
             val bitmap = (binding.imgThumbnail.drawable as? android.graphics.drawable.BitmapDrawable)?.bitmap
-            if (bitmap != null) {
-                CitizenReportsAdapter.attachedPhotos[location + "_" + description] = bitmap
-            }
 
             // Show temporary confirmation state: "Report submitted, analyzing..."
             binding.cardConfirmation.visibility = View.VISIBLE
@@ -169,7 +166,7 @@ class CitizenReportFragment : Fragment() {
 
             binding.root.postDelayed({
                 if (_binding != null) {
-                    viewModel.submitReport(location, description)
+                    viewModel.submitReport(location, description, bitmap)
                     binding.inputLocation.setText("")
                     binding.inputDescription.setText("")
                     binding.cardThumbnail.visibility = View.GONE

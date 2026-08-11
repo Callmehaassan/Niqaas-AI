@@ -9,10 +9,11 @@ interface NikaasRepository {
     fun getSectors(): List<String>
     fun getCitizenReports(): List<CitizenReport>
     fun getCitizenReportsForArea(area: String): List<CitizenReport>
-    fun submitCitizenReport(report: CitizenReport)
+    fun submitCitizenReport(report: CitizenReport, imageBitmap: android.graphics.Bitmap?)
     
     fun getMockWeather(area: String): WeatherSignal
     fun getMockTraffic(area: String): TrafficSignal
+    fun getLiveNullahLai(area: String): com.nikaas.app.data.model.NullahLaiSignal
     
     suspend fun fuseAndCreateIncident(area: String): FusedIncident
     fun getFusedIncidents(): List<FusedIncident>

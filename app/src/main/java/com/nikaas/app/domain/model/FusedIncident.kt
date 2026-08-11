@@ -15,6 +15,7 @@ data class FusedIncident(
     val citizenReports: List<CitizenReport> = emptyList(),
     val weatherSignal: WeatherSignal = WeatherSignal(),
     val trafficSignal: TrafficSignal = TrafficSignal(),
+    val nullahLaiSignal: com.nikaas.app.data.model.NullahLaiSignal = com.nikaas.app.data.model.NullahLaiSignal(),
     val actions: List<AiAction> = emptyList(),
     val beforeOutcome: ZoneOutcome = ZoneOutcome(),
     var afterOutcome: ZoneOutcome = ZoneOutcome(),

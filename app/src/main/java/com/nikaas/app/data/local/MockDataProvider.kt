@@ -70,4 +70,45 @@ object MockDataProvider {
             else -> TrafficSignal(congestionLevel = "Normal", averageSpeedKmph = 50, area = area)
         }
     }
+
+    /**
+     * Simulates live Nullah Lai hydrology sensor levels based on region and rain alerts.
+     */
+    fun getMockNullahLai(area: String): com.nikaas.app.data.model.NullahLaiSignal {
+        val cleanArea = area.trim()
+        return when {
+            cleanArea.contains("G-10") || cleanArea.contains("E-11") -> {
+                com.nikaas.app.data.model.NullahLaiSignal(
+                    kattarianWaterLevelFt = 16.2, // WARNING (alert > 11.5, danger > 15)
+                    gawalmandiWaterLevelFt = 18.5, // DANGER / EVACUATION (danger > 15, evacuation > 20)
+                    catchmentRainfallMm = 52.0,
+                    status = "Danger"
+                )
+            }
+            cleanArea.contains("F-8") -> {
+                com.nikaas.app.data.model.NullahLaiSignal(
+                    kattarianWaterLevelFt = 12.8,
+                    gawalmandiWaterLevelFt = 11.4,
+                    catchmentRainfallMm = 28.0,
+                    status = "Warning"
+                )
+            }
+            cleanArea.contains("I-8") -> {
+                com.nikaas.app.data.model.NullahLaiSignal(
+                    kattarianWaterLevelFt = 10.2,
+                    gawalmandiWaterLevelFt = 9.5,
+                    catchmentRainfallMm = 14.0,
+                    status = "Alert"
+                )
+            }
+            else -> {
+                com.nikaas.app.data.model.NullahLaiSignal(
+                    kattarianWaterLevelFt = 5.4,
+                    gawalmandiWaterLevelFt = 4.2,
+                    catchmentRainfallMm = 0.0,
+                    status = "Normal"
+                )
+            }
+        }
+    }
 }

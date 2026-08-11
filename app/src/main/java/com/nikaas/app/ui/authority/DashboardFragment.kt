@@ -121,6 +121,26 @@ class DashboardFragment : Fragment() {
         // 3. Reasoning explanation
         binding.txtReasoning.text = incident.confidenceReasoning
 
+        // 3.1. Nullah Lai FEWS live telemetry progress
+        val fews = incident.nullahLaiSignal
+        binding.txtFewsStatus.text = fews.status.uppercase()
+        val fewsColor = when (fews.status.lowercase()) {
+            "danger" -> ContextCompat.getColor(requireContext(), R.color.severity_high)
+            "warning" -> ContextCompat.getColor(requireContext(), R.color.severity_medium)
+            else -> ContextCompat.getColor(requireContext(), R.color.severity_low)
+        }
+        binding.txtFewsStatus.setTextColor(fewsColor)
+        
+        binding.txtFewsKattarian.text = "${fews.kattarianWaterLevelFt} ft"
+        binding.progressFewsKattarian.progress = (fews.kattarianWaterLevelFt * 10).toInt()
+        binding.progressFewsKattarian.progressTintList = android.content.res.ColorStateList.valueOf(fewsColor)
+
+        binding.txtFewsGawalmandi.text = "${fews.gawalmandiWaterLevelFt} ft"
+        binding.progressFewsGawalmandi.progress = (fews.gawalmandiWaterLevelFt * 10).toInt()
+        binding.progressFewsGawalmandi.progressTintList = android.content.res.ColorStateList.valueOf(fewsColor)
+
+        binding.txtFewsRainfall.text = "${fews.catchmentRainfallMm} mm"
+
         // 4. Populate Live Input Signals
         val reportsCount = incident.citizenReports.size
         val signalsList = listOf(
