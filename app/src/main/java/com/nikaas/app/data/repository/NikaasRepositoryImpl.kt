@@ -135,43 +135,31 @@ class NikaasRepositoryImpl(
             weatherSignal = getMockWeather(area)
         }
 
-        // Query live traffic travel duration times via Google Directions API
-        var trafficSignal = TrafficSignal(area = area)
-        try {
-            val response = TrafficApiClient.service.getDirections(
-                origin = "G-10, Islamabad",
-                destination = "F-10, Islamabad",
-                apiKey = Constants.GOOGLE_MAPS_API_KEY
-            )
-            if (response.status == "OK" && response.routes.isNotEmpty()) {
-                val leg = response.routes[0].legs[0]
-                val normalDuration = leg.duration.value
-                val trafficDuration = leg.duration_in_traffic?.value ?: normalDuration
-                
-                val speedDropRatio = if (normalDuration > 0) {
-                    trafficDuration.toDouble() / normalDuration.toDouble()
-                } else 1.0
+        // Calculate traffic travel congestion locally based on rainfall and Nullah Lai telemetry
+        // Decoupled from Google Directions API to bypass billing/credit card limits
+        val nullahLaiSignal = getLiveNullahLai(area)
+        val rainAlert = weatherSignal.hasRainfallAlert
+        val rainIntensity = weatherSignal.intensity
 
-                val congestion = when {
-                    speedDropRatio > 1.5 -> "Heavy Congestion"
-                    speedDropRatio > 1.2 -> "Moderate"
-                    else -> "Normal"
-                }
-                val speed = (45.0 / speedDropRatio).toInt() // Baseline average 45km/h scaled down by speed drop
-                trafficSignal = TrafficSignal(
-                    congestionLevel = congestion,
-                    averageSpeedKmph = speed,
-                    area = area
-                )
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            // Safe fallback to simulated telemetry
-            trafficSignal = getMockTraffic(area)
+        val speedDropRatio = when {
+            nullahLaiSignal.status == "Danger" -> 4.5
+            nullahLaiSignal.status == "Warning" -> 2.5
+            rainAlert && rainIntensity == "Heavy" -> 1.8
+            rainAlert && rainIntensity == "Medium" -> 1.3
+            else -> 1.0
         }
 
-        // Gather real Nullah Lai FEWS telemetry signals
-        val nullahLaiSignal = getLiveNullahLai(area)
+        val congestion = when {
+            speedDropRatio >= 2.5 -> "Heavy Congestion"
+            speedDropRatio >= 1.3 -> "Moderate"
+            else -> "Normal"
+        }
+        val speed = (45.0 / speedDropRatio).toInt()
+        val trafficSignal = TrafficSignal(
+            congestionLevel = congestion,
+            averageSpeedKmph = speed,
+            area = area
+        )
 
         // Gather real citizen reports from Firestore collection
         val reports = getCitizenReportsForArea(area)
@@ -203,6 +191,8 @@ class NikaasRepositoryImpl(
             severity = response.severity,
             confidenceScore = response.confidenceScore,
             confidenceReasoning = response.confidenceReasoning,
+            urduAlert = response.urduAlert,
+            englishAlert = response.englishAlert,
             citizenReports = reports,
             weatherSignal = weatherSignal,
             trafficSignal = trafficSignal,

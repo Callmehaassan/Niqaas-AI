@@ -12,6 +12,8 @@ data class FusedIncident(
     val severity: String = "Low", // "Low", "Medium", "High"
     val confidenceScore: Int = 0,
     val confidenceReasoning: String = "",
+    val urduAlert: String = "",
+    val englishAlert: String = "",
     val citizenReports: List<CitizenReport> = emptyList(),
     val weatherSignal: WeatherSignal = WeatherSignal(),
     val trafficSignal: TrafficSignal = TrafficSignal(),

@@ -164,9 +164,8 @@ class CitizenReportFragment : Fragment() {
             binding.cardConfirmation.visibility = View.VISIBLE
             binding.btnSubmit.isEnabled = false
 
-            binding.root.postDelayed({
+            viewModel.submitReport(location, description, bitmap) {
                 if (_binding != null) {
-                    viewModel.submitReport(location, description, bitmap)
                     binding.inputLocation.setText("")
                     binding.inputDescription.setText("")
                     binding.cardThumbnail.visibility = View.GONE
@@ -175,7 +174,7 @@ class CitizenReportFragment : Fragment() {
                     binding.btnSubmit.isEnabled = true
                     Toast.makeText(requireContext(), "Flood report submitted successfully!", Toast.LENGTH_SHORT).show()
                 }
-            }, 1500)
+            }
         }
     }
 

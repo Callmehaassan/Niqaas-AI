@@ -176,6 +176,51 @@
                             android:text="High confidence reasoning text"
                             android:textColor="@color/gray_text"
                             android:textSize="12sp" />
+
+                        <!-- Urdu warning advisory card -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="12dp"
+                            android:padding="10dp"
+                            android:background="@color/severity_high_bg">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="علاقائی الرٹ (Urdu Advisory)"
+                                    android:textColor="@color/primary"
+                                    android:textStyle="bold"
+                                    android:textSize="11sp" />
+
+                                <TextView
+                                    android:id="@+id/txt_urdu_alert"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="علاقے میں پانی بڑھ رہا ہے - برائے مہربانی سامان محفوظ جگہ منتقل کریں۔"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <ImageButton
+                                android:id="@+id/btn_speak_urdu"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_marginStart="8dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@android:drawable/ic_btn_speak_now"
+                                android:tint="@color/primary" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

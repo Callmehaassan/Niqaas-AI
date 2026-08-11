@@ -5,5 +5,7 @@ data class CitizenReport(
     val location: String = "",
     val description: String = "",
     val photoUrl: String? = null,
+    val blockageType: String = "Unknown",
+    val blockageSeverity: String = "Low",
     val timestamp: Long = System.currentTimeMillis()
 )

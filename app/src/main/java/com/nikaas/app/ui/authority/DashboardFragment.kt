@@ -30,6 +30,7 @@ class DashboardFragment : Fragment() {
     private val viewModel: DashboardViewModel by viewModels()
     private lateinit var signalsAdapter: SignalsAdapter
     private lateinit var actionListAdapter: ActionListAdapter
+    private var ttsManager: com.nikaas.app.ui.common.UrduVoiceAlertManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +43,7 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ttsManager = com.nikaas.app.ui.common.UrduVoiceAlertManager(requireContext())
         setupSectorSpinner()
         setupRecyclerViews()
         setupListeners()
@@ -121,6 +123,12 @@ class DashboardFragment : Fragment() {
 
         // 3. Reasoning explanation
         binding.txtReasoning.text = incident.confidenceReasoning
+
+        // 3.05. Localized Urdu Advisory Voice Alert
+        binding.txtUrduAlert.text = incident.urduAlert
+        binding.btnSpeakUrdu.setOnClickListener {
+            ttsManager?.speak(incident.urduAlert)
+        }
 
         // 3.1. Nullah Lai FEWS live telemetry progress
         val fews = incident.nullahLaiSignal
@@ -229,6 +237,7 @@ class DashboardFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        ttsManager?.shutdown()
         _binding = null
     }
 }
