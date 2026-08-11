@@ -120,14 +120,58 @@
                 android:src="@android:drawable/ic_dialog_alert"
                 android:tint="@color/severity_high" />
 
+            <!-- Red Traffic Congestion Warnings (Before State) -->
+            <ImageView
+                android:id="@+id/sim_traffic_marker_1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-40dp"
+                android:layout_marginStart="-60dp"
+                android:src="@android:drawable/stat_notify_error"
+                android:tint="@color/severity_high" />
+
+            <ImageView
+                android:id="@+id/sim_traffic_marker_2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="60dp"
+                android:src="@android:drawable/stat_notify_error"
+                android:tint="@color/severity_high" />
+
+            <!-- Green Solved Route Markers (After State) -->
+            <ImageView
+                android:id="@+id/sim_solved_marker_1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-40dp"
+                android:layout_marginStart="-60dp"
+                android:src="@android:drawable/checkbox_on_background"
+                android:tint="@color/severity_low"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/sim_solved_marker_2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:layout_marginStart="60dp"
+                android:src="@android:drawable/checkbox_on_background"
+                android:tint="@color/severity_low"
+                android:visibility="gone" />
+
             <!-- WASA Truck Marker -->
             <ImageView
                 android:id="@+id/sim_truck_marker"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                android:layout_marginStart="-40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="-30dp"
                 android:src="@android:drawable/ic_menu_compass"
                 android:tint="@color/severity_medium"
                 android:visibility="gone" />

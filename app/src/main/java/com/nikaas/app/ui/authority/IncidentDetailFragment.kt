@@ -171,6 +171,10 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.simFloodZone.visibility = View.VISIBLE
                 binding.simFloodZone.alpha = 1.0f
                 binding.simFloodMarker.visibility = View.VISIBLE
+                binding.simTrafficMarker1.visibility = View.VISIBLE
+                binding.simTrafficMarker2.visibility = View.VISIBLE
+                binding.simSolvedMarker1.visibility = View.GONE
+                binding.simSolvedMarker2.visibility = View.GONE
                 binding.simAlertZone.visibility = View.GONE
                 binding.simRerouteLine.visibility = View.GONE
                 binding.simTruckMarker.visibility = View.GONE
@@ -178,6 +182,10 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
                 binding.simFloodZone.visibility = View.VISIBLE
                 binding.simFloodZone.alpha = 0.4f // faded opacity
                 binding.simFloodMarker.visibility = View.GONE
+                binding.simTrafficMarker1.visibility = View.GONE
+                binding.simTrafficMarker2.visibility = View.GONE
+                binding.simSolvedMarker1.visibility = View.VISIBLE
+                binding.simSolvedMarker2.visibility = View.VISIBLE
                 binding.simAlertZone.visibility = View.VISIBLE
                 binding.simRerouteLine.visibility = View.VISIBLE
                 binding.simTruckMarker.visibility = View.VISIBLE
@@ -187,6 +195,10 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
 
         val map = googleMap ?: return
         map.clear()
+
+        // Surrounding intersection points for traffic congestion and solved routing indicators
+        val trafficPoint1 = LatLng(33.6740, 72.9920)
+        val trafficPoint2 = LatLng(33.6820, 73.0020)
 
         if (isBeforeState) {
             // Draw Flood Risk Polygon (Red, semi-transparent)
@@ -198,11 +210,27 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
                     .strokeWidth(2f)
             )
 
-            // Pulsing Flood Center Marker
+            // Pulsing Flood Center Marker (Red)
             map.addMarker(
                 MarkerOptions()
                     .position(floodPoint)
-                    .title("G-10 Underpass Flooded")
+                    .title("G-10 Underpass Flooded (CRITICAL)")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            )
+
+            // Traffic Congested Intersections (Red Markers)
+            map.addMarker(
+                MarkerOptions()
+                    .position(trafficPoint1)
+                    .title("CONGESTED INTERSECTION (8 km/h)")
+                    .snippet("Water backing up from underpass")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            )
+            map.addMarker(
+                MarkerOptions()
+                    .position(trafficPoint2)
+                    .title("TRAFFIC GRIDLOCK (5 km/h)")
+                    .snippet("Severe commuter back up")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             )
         } else {
@@ -238,7 +266,24 @@ class IncidentDetailFragment : Fragment(), OnMapReadyCallback {
                 MarkerOptions()
                     .position(truckPoint)
                     .title("WASA Drain Team Truck")
+                    .snippet("Suction pump active - clearing drainage lines")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+            )
+
+            // Traffic Solved / Rerouted Intersections (Green Markers)
+            map.addMarker(
+                MarkerOptions()
+                    .position(trafficPoint1)
+                    .title("TRAFFIC REROUTED (35 km/h)")
+                    .snippet("Service Road West bypass route clear")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            )
+            map.addMarker(
+                MarkerOptions()
+                    .position(trafficPoint2)
+                    .title("DETOUR FLOWING (38 km/h)")
+                    .snippet("Gridlock cleared via diversion plan")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
             )
         }
     }
