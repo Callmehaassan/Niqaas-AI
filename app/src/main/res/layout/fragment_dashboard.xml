@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/background"
     tools:context=".ui.authority.DashboardFragment">
 
     <LinearLayout
@@ -13,12 +14,12 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Selector Row -->
+        <!-- Selector Card (Command Spinner) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="1dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
             app:cardBackgroundColor="@color/surface"
             app:strokeColor="@color/gray_border"
             app:strokeWidth="1dp"
@@ -28,31 +29,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp">
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Select Area to Monitor &amp; Fuse"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:letterSpacing="0.03" />
 
-                <Spinner
-                    android:id="@+id/spinner_sectors"
+                <!-- Spinner Container Frame for Outlined Border Styling -->
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginTop="4dp"
-                    android:background="@android:drawable/btn_dropdown" />
+                    android:layout_marginTop="8dp"
+                    android:background="@android:drawable/btn_dropdown">
+
+                    <Spinner
+                        android:id="@+id/spinner_sectors"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="8dp"
+                        android:textColor="@color/white" />
+                </FrameLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_fuse"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
                     android:text="FUSE SIGNALS &amp; ANALYZE"
-                    app:backgroundTint="@color/secondary"
-                    app:cornerRadius="8dp" />
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="10dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -63,7 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            android:layout_margin="24dp" />
+            android:indeterminateTint="@color/primary"
+            android:layout_margin="32dp" />
 
         <!-- Empty State View -->
         <TextView
@@ -85,73 +97,86 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <!-- Severity Card -->
+            <!-- AI Assessment Card (with Dynamic Left Indicator) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
+                app:cardElevation="3dp"
                 app:cardBackgroundColor="@color/surface"
                 app:strokeColor="@color/gray_border"
                 app:strokeWidth="1dp"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="horizontal">
+
+                    <!-- Left Color Indicator (tints red/amber/teal dynamically) -->
+                    <View
+                        android:id="@+id/view_severity_indicator"
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/primary" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/txt_severity_badge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="HIGH SEVERITY"
+                                android:textColor="@color/white"
+                                android:background="@color/severity_high"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp"
+                                android:textStyle="bold"
+                                android:textSize="11sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="1dp"
+                                android:layout_weight="1" />
+
+                            <TextView
+                                android:id="@+id/txt_confidence_score"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Confidence: 95%"
+                                android:textStyle="bold"
+                                android:textColor="@color/primary"
+                                android:textSize="13sp" />
+                        </LinearLayout>
 
                         <TextView
-                            android:id="@+id/txt_severity_badge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="HIGH SEVERITY"
+                            android:layout_marginTop="12dp"
+                            android:text="AI Severity Reasoning Trail"
                             android:textColor="@color/white"
-                            android:background="@color/severity_high"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="6dp"
                             android:textStyle="bold"
-                            android:textSize="12sp" />
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1" />
+                            android:textSize="13sp" />
 
                         <TextView
-                            android:id="@+id/txt_confidence_score"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txt_reasoning"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Confidence: 95%"
-                            android:textStyle="bold"
-                            android:textColor="@color/primary"
-                            android:textSize="13sp" />
+                            android:layout_marginTop="4dp"
+                            android:text="High confidence reasoning text"
+                            android:textColor="@color/gray_text"
+                            android:textSize="12sp" />
                     </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="AI Severity Reasoning Trail"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/txt_reasoning"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="High confidence reasoning text"
-                        android:textColor="@color/gray_text"
-                        android:textSize="12sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -219,7 +244,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Kattarian Inflow Bridge Sensor"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="12sp" />
                             <View
                                 android:layout_width="0dp"
@@ -261,7 +286,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Gawalmandi Outflow Bridge Sensor"
-                                android:textColor="@color/black"
+                                android:textColor="@color/white"
                                 android:textSize="12sp" />
                             <View
                                 android:layout_width="0dp"
@@ -320,10 +345,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Live Input Signals Fused"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="13sp"
-                android:layout_marginBottom="6dp" />
+                android:layout_marginBottom="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_signals"
@@ -337,10 +362,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Proposed Coordinated Actions"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="13sp"
-                android:layout_marginBottom="6dp" />
+                android:layout_marginBottom="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_actions"
@@ -363,8 +388,9 @@
                     android:layout_height="52dp"
                     android:layout_weight="3"
                     android:text="APPROVE &amp; EXECUTE"
+                    android:textStyle="bold"
                     app:backgroundTint="@color/primary"
-                    app:cornerRadius="8dp" />
+                    app:cornerRadius="10dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_override"
@@ -375,8 +401,9 @@
                     android:layout_marginStart="8dp"
                     android:text="OVERRIDE"
                     android:textColor="@color/error"
+                    android:textStyle="bold"
                     app:strokeColor="@color/error"
-                    app:cornerRadius="8dp" />
+                    app:cornerRadius="10dp" />
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -384,8 +411,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:text="MARK INCIDENT RESOLVED"
+                android:textStyle="bold"
                 app:backgroundTint="@color/severity_low"
-                app:cornerRadius="8dp"
+                app:cornerRadius="10dp"
                 android:layout_marginBottom="8dp"
                 android:visibility="gone" />
 
@@ -396,20 +424,22 @@
                 android:layout_height="52dp"
                 android:text="VIEW TACTICAL RESPONSE MAP"
                 android:textColor="@color/primary"
+                android:textStyle="bold"
                 app:strokeColor="@color/primary"
                 app:icon="@android:drawable/ic_menu_compass"
-                app:cornerRadius="8dp"
-                android:layout_marginBottom="16dp" />
+                app:iconTint="@color/primary"
+                app:cornerRadius="10dp"
+                android:layout_marginBottom="20dp" />
 
             <!-- Visual Outcome Simulation Card -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Operational Outcome Simulation"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="13sp"
-                android:layout_marginBottom="6dp" />
+                android:layout_marginBottom="8dp" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -451,7 +481,7 @@
                             android:layout_weight="1"
                             android:orientation="vertical"
                             android:background="@color/severity_high_bg"
-                            android:padding="8dp">
+                            android:padding="12dp">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -466,12 +496,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:background="@color/gray_border"
-                                android:layout_marginVertical="4dp" />
+                                android:layout_marginVertical="6dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Traffic:"
+                                android:textColor="@color/gray_text"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
                             <TextView
@@ -480,13 +511,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="Heavy Congestion"
                                 android:textColor="@color/severity_high"
-                                android:textSize="11sp" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
+                                android:layout_marginTop="8dp"
                                 android:text="Dispatch:"
+                                android:textColor="@color/gray_text"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
                             <TextView
@@ -495,13 +528,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="Idle"
                                 android:textColor="@color/severity_medium"
-                                android:textSize="11sp" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
+                                android:layout_marginTop="8dp"
                                 android:text="Residents Alert:"
+                                android:textColor="@color/gray_text"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
                             <TextView
@@ -510,12 +545,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="None Sent"
                                 android:textColor="@color/severity_medium"
-                                android:textSize="11sp" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
                         </LinearLayout>
 
-                        <!-- Divider -->
+                        <!-- Divider Spacer -->
                         <View
-                            android:layout_width="8dp"
+                            android:layout_width="12dp"
                             android:layout_height="match_parent" />
 
                         <!-- After Column -->
@@ -525,7 +561,7 @@
                             android:layout_weight="1"
                             android:orientation="vertical"
                             android:background="@color/severity_low_bg"
-                            android:padding="8dp">
+                            android:padding="12dp">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -540,12 +576,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:background="@color/gray_border"
-                                android:layout_marginVertical="4dp" />
+                                android:layout_marginVertical="6dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Traffic:"
+                                android:textColor="@color/gray_text"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
                             <TextView
@@ -554,13 +591,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="Normal"
                                 android:textColor="@color/severity_low"
-                                android:textSize="11sp" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
+                                android:layout_marginTop="8dp"
                                 android:text="Dispatch:"
+                                android:textColor="@color/gray_text"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
                             <TextView
@@ -569,13 +608,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="WASA En Route"
                                 android:textColor="@color/severity_low"
-                                android:textSize="11sp" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="6dp"
+                                android:layout_marginTop="8dp"
                                 android:text="Residents Alert:"
+                                android:textColor="@color/gray_text"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
                             <TextView
@@ -584,7 +625,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="Sent"
                                 android:textColor="@color/severity_low"
-                                android:textSize="11sp" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

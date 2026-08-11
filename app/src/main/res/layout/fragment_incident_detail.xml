@@ -15,17 +15,17 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
-        android:background="@color/background"
-        android:elevation="2dp"
+        android:background="@color/surface"
+        android:elevation="3dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/btn_back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:src="@android:drawable/ic_menu_revert"
-            android:tint="@color/white"
-            android:padding="4dp" />
+            android:tint="@color/primary"
+            android:padding="8dp" />
 
         <TextView
             android:id="@+id/txt_detail_title"
@@ -44,8 +44,8 @@
             android:text="CRITICAL"
             android:textColor="@color/white"
             android:background="@color/severity_high"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="4dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
             android:textStyle="bold"
             android:textSize="11sp" />
     </LinearLayout>
@@ -186,17 +186,17 @@
                 android:textSize="9sp" />
         </FrameLayout>
 
-        <!-- Floating before/after toggle card -->
+        <!-- Floating before/after segmented toggle card -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="160dp"
-            android:layout_height="36dp"
+            android:layout_width="170dp"
+            android:layout_height="38dp"
             android:layout_gravity="top|center_horizontal"
             android:layout_marginTop="16dp"
-            app:cardCornerRadius="18dp"
+            app:cardCornerRadius="19dp"
             app:cardBackgroundColor="@color/surface"
             app:strokeColor="@color/gray_border"
             app:strokeWidth="1dp"
-            app:cardElevation="4dp">
+            app:cardElevation="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -257,7 +257,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="4dp"
-                    app:cardCornerRadius="8dp"
+                    app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="@color/surface"
                     app:strokeColor="@color/gray_border"
                     app:strokeWidth="1dp">
@@ -265,7 +265,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp"
+                        android:padding="10dp"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -292,7 +292,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="2dp"
-                    app:cardCornerRadius="8dp"
+                    app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="@color/surface"
                     app:strokeColor="@color/gray_border"
                     app:strokeWidth="1dp">
@@ -300,7 +300,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp"
+                        android:padding="10dp"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -327,7 +327,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="2dp"
-                    app:cardCornerRadius="8dp"
+                    app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="@color/surface"
                     app:strokeColor="@color/gray_border"
                     app:strokeWidth="1dp">
@@ -335,7 +335,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp"
+                        android:padding="10dp"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -362,7 +362,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="4dp"
-                    app:cardCornerRadius="8dp"
+                    app:cardCornerRadius="10dp"
                     app:cardBackgroundColor="@color/surface"
                     app:strokeColor="@color/gray_border"
                     app:strokeWidth="1dp">
@@ -370,7 +370,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp"
+                        android:padding="10dp"
                         android:gravity="center">
                         <TextView
                             android:layout_width="wrap_content"
@@ -400,7 +400,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
+                app:cardCornerRadius="12dp"
                 app:cardBackgroundColor="@color/surface"
                 app:strokeColor="@color/gray_border"
                 app:strokeWidth="1dp">
@@ -528,7 +528,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
+                app:cardCornerRadius="12dp"
                 app:cardBackgroundColor="@color/surface"
                 app:strokeColor="@color/primary"
                 app:strokeWidth="1.5dp">

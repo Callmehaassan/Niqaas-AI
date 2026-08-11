@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="10dp"
     app:cardElevation="1dp"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/surface"
     app:strokeColor="@color/gray_border"
     app:strokeWidth="1dp">
 
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Action Type"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="13sp" />
 
@@ -54,8 +54,8 @@
             android:id="@+id/txt_action_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
             android:text="Pending"
             android:textSize="10sp"
             android:textStyle="bold"

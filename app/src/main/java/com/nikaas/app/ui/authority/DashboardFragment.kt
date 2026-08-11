@@ -114,6 +114,7 @@ class DashboardFragment : Fragment() {
             else -> ContextCompat.getColor(requireContext(), R.color.severity_low)
         }
         binding.txtSeverityBadge.setBackgroundColor(severityColor)
+        binding.viewSeverityIndicator.setBackgroundColor(severityColor)
 
         // 2. Confidence rating
         binding.txtConfidenceScore.text = "Confidence: ${incident.confidenceScore}%"
