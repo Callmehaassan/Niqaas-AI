@@ -24,6 +24,7 @@ class CitizenReportFragment : Fragment() {
 
     private val viewModel: CitizenReportViewModel by viewModels()
     private lateinit var adapter: CitizenReportsAdapter
+    private var ttsManager: com.nikaas.app.ui.common.UrduVoiceAlertManager? = null
 
     // Camera launcher to capture thumbnail image
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -69,6 +70,24 @@ class CitizenReportFragment : Fragment() {
         // Observe LiveData reports list
         viewModel.reports.observe(viewLifecycleOwner) { reports ->
             adapter.updateData(reports)
+        }
+
+        // Initialize Text-To-Speech for citizen voice alert warnings
+        ttsManager = com.nikaas.app.ui.common.UrduVoiceAlertManager(requireContext())
+
+        // Observe active emergency warnings
+        viewModel.activeWarning.observe(viewLifecycleOwner) { warning ->
+            if (warning == null) {
+                binding.cardEmergencyWarning.visibility = View.GONE
+            } else {
+                binding.cardEmergencyWarning.visibility = View.VISIBLE
+                binding.txtWarningLevel.text = "${warning.severity.uppercase()} RISK FLOOD WARNING"
+                binding.txtWarningUrdu.text = warning.urduAlert
+
+                binding.btnSpeakWarning.setOnClickListener {
+                    ttsManager?.speak(warning.urduAlert)
+                }
+            }
         }
     }
 
@@ -160,11 +179,16 @@ class CitizenReportFragment : Fragment() {
             // Extract the attached photo bitmap if any
             val bitmap = (binding.imgThumbnail.drawable as? android.graphics.drawable.BitmapDrawable)?.bitmap
 
+            // Retrieve authenticated citizen user info to log with report
+            val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+            val uid = currentUser?.uid ?: "Anonymous"
+            val name = currentUser?.displayName ?: currentUser?.email ?: "Verified Citizen"
+
             // Show temporary confirmation state: "Report submitted, analyzing..."
             binding.cardConfirmation.visibility = View.VISIBLE
             binding.btnSubmit.isEnabled = false
 
-            viewModel.submitReport(location, description, bitmap) {
+            viewModel.submitReport(location, description, bitmap, uid, name) {
                 if (_binding != null) {
                     binding.inputLocation.setText("")
                     binding.inputDescription.setText("")
@@ -182,10 +206,12 @@ class CitizenReportFragment : Fragment() {
         super.onResume()
         // Ensure data is refreshed when returning to this fragment
         viewModel.loadReports()
+        viewModel.checkForActiveWarnings()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        ttsManager?.shutdown()
         _binding = null
     }
 }

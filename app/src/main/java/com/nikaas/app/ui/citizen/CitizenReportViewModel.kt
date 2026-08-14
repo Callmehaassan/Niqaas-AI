@@ -17,15 +17,34 @@ class CitizenReportViewModel(
     private val _reports = MutableLiveData<List<CitizenReport>>()
     val reports: LiveData<List<CitizenReport>> get() = _reports
 
+    private val _activeWarning = MutableLiveData<FusedIncident?>()
+    val activeWarning: LiveData<FusedIncident?> get() = _activeWarning
+
     init {
         loadReports()
+        checkForActiveWarnings()
+    }
+
+    fun checkForActiveWarnings() {
+        viewModelScope.launch {
+            val incidents = repository.getFusedIncidents()
+            val warning = incidents.firstOrNull { it.isApproved && !it.isResolved && (it.severity == "High" || it.severity == "Medium") }
+            _activeWarning.value = warning
+        }
     }
 
     fun loadReports() {
         _reports.value = repository.getCitizenReports()
     }
 
-    fun submitReport(location: String, description: String, imageBitmap: android.graphics.Bitmap?, onCompleted: () -> Unit) {
+    fun submitReport(
+        location: String,
+        description: String,
+        imageBitmap: android.graphics.Bitmap?,
+        reporterUid: String,
+        reporterName: String,
+        onCompleted: () -> Unit
+    ) {
         viewModelScope.launch {
             var blockageType = "None"
             var blockageSeverity = "Low"
@@ -46,6 +65,8 @@ class CitizenReportViewModel(
                 description = description,
                 blockageType = blockageType,
                 blockageSeverity = blockageSeverity,
+                reporterUid = reporterUid,
+                reporterName = reporterName,
                 timestamp = System.currentTimeMillis()
             )
             repository.submitCitizenReport(report, imageBitmap)
