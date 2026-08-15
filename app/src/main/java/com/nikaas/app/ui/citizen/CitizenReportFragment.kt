@@ -91,6 +91,18 @@ class CitizenReportFragment : Fragment() {
                 }
             }
         }
+
+        // Observe weather signals for citizen information
+        viewModel.weatherSignal.observe(viewLifecycleOwner) { weather ->
+            if (weather != null) {
+                val tempStr = if (weather.temp > 0.0) "${weather.temp.toInt()}°C · " else ""
+                val condition = weather.description.ifEmpty { "Clear Sky" }
+                val alert = if (weather.hasRainfallAlert) " [Alert: ${weather.intensity} Rain]" else ""
+                binding.txtCitizenWeather.text = "Weather: $tempStr$condition$alert"
+            } else {
+                binding.txtCitizenWeather.text = "Live weather signals loading..."
+            }
+        }
     }
 
     private fun setupLocationFields() {

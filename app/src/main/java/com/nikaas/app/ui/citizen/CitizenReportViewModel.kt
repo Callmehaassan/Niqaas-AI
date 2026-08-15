@@ -21,9 +21,24 @@ class CitizenReportViewModel(
     private val _activeWarning = MutableLiveData<FusedIncident?>()
     val activeWarning: LiveData<FusedIncident?> get() = _activeWarning
 
+    private val _weatherSignal = MutableLiveData<com.nikaas.app.data.model.WeatherSignal>()
+    val weatherSignal: LiveData<com.nikaas.app.data.model.WeatherSignal> get() = _weatherSignal
+
     init {
         loadReports()
         checkForActiveWarnings()
+        loadWeather("G-10 Sector")
+    }
+
+    fun loadWeather(area: String) {
+        viewModelScope.launch {
+            try {
+                val weather = repository.getMockWeather(area)
+                _weatherSignal.postValue(weather)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun checkForActiveWarnings() {

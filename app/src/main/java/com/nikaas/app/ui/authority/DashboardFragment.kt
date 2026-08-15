@@ -88,6 +88,10 @@ class DashboardFragment : Fragment() {
         )
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerSectors.adapter = spinnerAdapter
+
+        // Auto-fuse default sector on startup so layout is never blank!
+        val defaultSector = sectors.firstOrNull() ?: "G-10 Sector"
+        viewModel.fuseAndAnalyze(defaultSector)
     }
 
     private fun setupRecyclerViews() {

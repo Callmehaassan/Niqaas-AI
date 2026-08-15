@@ -117,6 +117,31 @@
                         android:text="Report localized street flooding directly. Your report fuses with traffic and weather signals to coordinate response teams."
                         android:textColor="@color/gray_text"
                         android:textSize="12sp" />
+
+                    <!-- Live Weather Status Tag -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="8dp">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@android:drawable/ic_menu_compass"
+                            android:tint="@color/primary"
+                            android:layout_marginEnd="6dp" />
+
+                        <TextView
+                            android:id="@+id/txt_citizen_weather"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Loading live weather signals..."
+                            android:textColor="@color/primary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
