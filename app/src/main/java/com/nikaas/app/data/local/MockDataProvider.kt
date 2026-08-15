@@ -72,43 +72,63 @@ object MockDataProvider {
     }
 
     /**
-     * Simulates live Nullah Lai hydrology sensor levels based on region and rain alerts.
+     * Simulates live Nullah Lai hydrology sensor levels based on region and live weather rainfall rates.
      */
-    fun getMockNullahLai(area: String): com.nikaas.app.data.model.NullahLaiSignal {
+    fun getMockNullahLai(area: String, weather: WeatherSignal): com.nikaas.app.data.model.NullahLaiSignal {
         val cleanArea = area.trim()
-        return when {
+        val baseSignal = when {
             cleanArea.contains("G-10") || cleanArea.contains("E-11") -> {
                 com.nikaas.app.data.model.NullahLaiSignal(
-                    kattarianWaterLevelFt = 16.2, // WARNING (alert > 11.5, danger > 15)
-                    gawalmandiWaterLevelFt = 18.5, // DANGER / EVACUATION (danger > 15, evacuation > 20)
-                    catchmentRainfallMm = 52.0,
-                    status = "Danger"
+                    kattarianWaterLevelFt = 13.2, // Warning baseline
+                    gawalmandiWaterLevelFt = 14.5,
+                    catchmentRainfallMm = 45.0,
+                    status = "Warning"
                 )
             }
             cleanArea.contains("F-8") -> {
                 com.nikaas.app.data.model.NullahLaiSignal(
-                    kattarianWaterLevelFt = 12.8,
-                    gawalmandiWaterLevelFt = 11.4,
-                    catchmentRainfallMm = 28.0,
-                    status = "Warning"
-                )
-            }
-            cleanArea.contains("I-8") -> {
-                com.nikaas.app.data.model.NullahLaiSignal(
-                    kattarianWaterLevelFt = 10.2,
-                    gawalmandiWaterLevelFt = 9.5,
-                    catchmentRainfallMm = 14.0,
+                    kattarianWaterLevelFt = 9.8,
+                    gawalmandiWaterLevelFt = 8.4,
+                    catchmentRainfallMm = 20.0,
                     status = "Alert"
                 )
             }
             else -> {
                 com.nikaas.app.data.model.NullahLaiSignal(
-                    kattarianWaterLevelFt = 5.4,
-                    gawalmandiWaterLevelFt = 4.2,
+                    kattarianWaterLevelFt = 4.2,
+                    gawalmandiWaterLevelFt = 3.5,
                     catchmentRainfallMm = 0.0,
                     status = "Normal"
                 )
             }
         }
+
+        // Add real-time rainfall rate adjustments from OpenWeather API!
+        val additionalRain = if (weather.hasRainfallAlert) {
+            when (weather.intensity) {
+                "Heavy" -> 6.5
+                "Medium" -> 3.2
+                "Light" -> 1.5
+                else -> 0.0
+            }
+        } else 0.0
+
+        val finalKattarian = baseSignal.kattarianWaterLevelFt + additionalRain
+        val finalGawalmandi = baseSignal.gawalmandiWaterLevelFt + additionalRain
+        val finalRainfall = baseSignal.catchmentRainfallMm + (additionalRain * 4.0)
+
+        val finalStatus = when {
+            finalGawalmandi >= 15.0 || finalKattarian >= 15.0 -> "Danger"
+            finalGawalmandi >= 11.5 || finalKattarian >= 11.5 -> "Warning"
+            finalGawalmandi >= 8.0 || finalKattarian >= 8.0 -> "Alert"
+            else -> "Normal"
+        }
+
+        return com.nikaas.app.data.model.NullahLaiSignal(
+            kattarianWaterLevelFt = finalKattarian,
+            gawalmandiWaterLevelFt = finalGawalmandi,
+            catchmentRainfallMm = finalRainfall,
+            status = finalStatus
+        )
     }
 }

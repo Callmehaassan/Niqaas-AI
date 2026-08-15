@@ -107,7 +107,7 @@ class NikaasRepositoryImpl(
 
     override fun getMockTraffic(area: String): TrafficSignal = MockDataProvider.getMockTraffic(area)
 
-    override fun getLiveNullahLai(area: String): com.nikaas.app.data.model.NullahLaiSignal = MockDataProvider.getMockNullahLai(area)
+    override fun getLiveNullahLai(area: String, weather: WeatherSignal): com.nikaas.app.data.model.NullahLaiSignal = MockDataProvider.getMockNullahLai(area, weather)
 
     override suspend fun fuseAndCreateIncident(area: String): FusedIncident {
         // Query live weather signals via OpenWeather API
@@ -137,7 +137,7 @@ class NikaasRepositoryImpl(
 
         // Calculate traffic travel congestion locally based on rainfall and Nullah Lai telemetry
         // Decoupled from Google Directions API to bypass billing/credit card limits
-        val nullahLaiSignal = getLiveNullahLai(area)
+        val nullahLaiSignal = getLiveNullahLai(area, weatherSignal)
         val rainAlert = weatherSignal.hasRainfallAlert
         val rainIntensity = weatherSignal.intensity
 

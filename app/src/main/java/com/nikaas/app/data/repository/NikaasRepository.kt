@@ -13,7 +13,7 @@ interface NikaasRepository {
     
     fun getMockWeather(area: String): WeatherSignal
     fun getMockTraffic(area: String): TrafficSignal
-    fun getLiveNullahLai(area: String): com.nikaas.app.data.model.NullahLaiSignal
+    fun getLiveNullahLai(area: String, weather: WeatherSignal): com.nikaas.app.data.model.NullahLaiSignal
     
     suspend fun fuseAndCreateIncident(area: String): FusedIncident
     fun getFusedIncidents(): List<FusedIncident>
