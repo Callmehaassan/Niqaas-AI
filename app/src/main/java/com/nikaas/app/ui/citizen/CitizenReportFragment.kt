@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nikaas.app.databinding.FragmentCitizenReportBinding
+import com.nikaas.app.data.model.CitizenReport
+import com.nikaas.app.domain.model.FusedIncident
 import com.nikaas.app.ui.citizen.adapters.CitizenReportsAdapter
 
 class CitizenReportFragment : Fragment() {
@@ -76,7 +78,7 @@ class CitizenReportFragment : Fragment() {
         ttsManager = com.nikaas.app.ui.common.UrduVoiceAlertManager(requireContext())
 
         // Observe active emergency warnings
-        viewModel.activeWarning.observe(viewLifecycleOwner) { warning ->
+        viewModel.activeWarning.observe(viewLifecycleOwner) { warning: FusedIncident? ->
             if (warning == null) {
                 binding.cardEmergencyWarning.visibility = View.GONE
             } else {

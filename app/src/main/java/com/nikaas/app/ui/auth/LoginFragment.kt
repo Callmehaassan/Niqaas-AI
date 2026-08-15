@@ -109,40 +109,50 @@ class LoginFragment : Fragment() {
                 return
             }
 
+            android.util.Log.d("NikaasAuth", "Starting registration for: $email")
             auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener { result ->
-                    val user = result.user
-                    if (user != null) {
-                        // Store verified citizen profile in Firestore
-                        val userProfile = mapOf(
-                            "uid" to user.uid,
-                            "name" to name,
-                            "phone" to phone,
-                            "email" to email,
-                            "role" to if (isCitizenSelected) "Citizen" else "Authority"
-                        )
-                        firestore.collection("users").document(user.uid).set(userProfile)
-                            .addOnCompleteListener {
-                                navigateToPortal(isCitizenSelected)
-                            }
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user = task.result?.user
+                        android.util.Log.d("NikaasAuth", "Firebase Auth registration success: ${user?.uid}")
+                        if (user != null) {
+                            val userProfile = mapOf(
+                                "uid" to user.uid,
+                                "name" to name,
+                                "phone" to phone,
+                                "email" to email,
+                                "role" to if (isCitizenSelected) "Citizen" else "Authority"
+                            )
+                            // Run firestore save in background, do not block navigation progress!
+                            firestore.collection("users").document(user.uid).set(userProfile)
+                                .addOnFailureListener { fe ->
+                                    android.util.Log.e("NikaasAuth", "Firestore profile write failed", fe)
+                                }
+                        }
+                        navigateToPortal(isCitizenSelected)
+                    } else {
+                        binding.btnAction.isEnabled = true
+                        binding.progressAuth.hide()
+                        val errorMsg = task.exception?.localizedMessage ?: "Unknown Error"
+                        android.util.Log.e("NikaasAuth", "Registration failed: $errorMsg", task.exception)
+                        Toast.makeText(requireContext(), "Registration Failed: $errorMsg", Toast.LENGTH_LONG).show()
                     }
                 }
-                .addOnFailureListener { e ->
-                    binding.btnAction.isEnabled = true
-                    binding.progressAuth.hide()
-                    Toast.makeText(requireContext(), "Sign Up Failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
-                }
         } else {
+            android.util.Log.d("NikaasAuth", "Starting sign in for: $email")
             auth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener { result ->
-                    // Auto-route based on domain if authority, or stick to choice
-                    val isAuthorityDomain = email.endsWith("@wasa.gov.pk") || email.endsWith("@nikaas.gov.pk")
-                    navigateToPortal(!isAuthorityDomain && isCitizenSelected)
-                }
-                .addOnFailureListener { e ->
-                    binding.btnAction.isEnabled = true
-                    binding.progressAuth.hide()
-                    Toast.makeText(requireContext(), "Authentication Failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        android.util.Log.d("NikaasAuth", "Sign in success")
+                        val isAuthorityDomain = email.endsWith("@wasa.gov.pk") || email.endsWith("@nikaas.gov.pk")
+                        navigateToPortal(!isAuthorityDomain && isCitizenSelected)
+                    } else {
+                        binding.btnAction.isEnabled = true
+                        binding.progressAuth.hide()
+                        val errorMsg = task.exception?.localizedMessage ?: "Unknown Error"
+                        android.util.Log.e("NikaasAuth", "Sign in failed: $errorMsg", task.exception)
+                        Toast.makeText(requireContext(), "Authentication Failed: $errorMsg", Toast.LENGTH_LONG).show()
+                    }
                 }
         }
     }

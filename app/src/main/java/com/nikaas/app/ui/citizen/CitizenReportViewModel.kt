@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nikaas.app.data.model.CitizenReport
 import com.nikaas.app.data.repository.NikaasRepository
+import com.nikaas.app.domain.model.FusedIncident
 import com.nikaas.app.utils.ServiceLocator
 
 import androidx.lifecycle.viewModelScope
