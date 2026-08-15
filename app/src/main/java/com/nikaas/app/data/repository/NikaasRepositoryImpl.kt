@@ -64,13 +64,17 @@ class NikaasRepositoryImpl(
 
     override fun getSectors(): List<String> = MockDataProvider.SECTORS
 
-    override fun getCitizenReports(): List<CitizenReport> = localReports
+    override fun getCitizenReports(): List<CitizenReport> {
+        return localReports.filter { it.reporterUid.isNotEmpty() }
+    }
 
     override fun getCitizenReportsForArea(area: String): List<CitizenReport> {
         val normalizedArea = area.trim()
         return localReports.filter { 
-            it.location.contains(normalizedArea, ignoreCase = true) ||
-            normalizedArea.contains(it.location, ignoreCase = true)
+            it.reporterUid.isNotEmpty() && (
+                it.location.contains(normalizedArea, ignoreCase = true) ||
+                normalizedArea.contains(it.location, ignoreCase = true)
+            )
         }
     }
 
@@ -127,7 +131,9 @@ class NikaasRepositoryImpl(
             weatherSignal = WeatherSignal(
                 hasRainfallAlert = hasRain,
                 intensity = intensity,
-                area = area
+                area = area,
+                temp = response.main.temp,
+                description = response.weather.firstOrNull()?.description ?: "Clear Sky"
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -208,7 +214,9 @@ class NikaasRepositoryImpl(
         return incident
     }
 
-    override fun getFusedIncidents(): List<FusedIncident> = localIncidents
+    override fun getFusedIncidents(): List<FusedIncident> {
+        return localIncidents.filter { it.urduAlert.isNotEmpty() }
+    }
 
     override fun getIncidentById(id: String): FusedIncident? {
         return localIncidents.find { it.id == id }

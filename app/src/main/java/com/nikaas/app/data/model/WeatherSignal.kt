@@ -4,5 +4,7 @@ data class WeatherSignal(
     val hasRainfallAlert: Boolean = false,
     val intensity: String = "None", // e.g. "Heavy", "Light", "None"
     val area: String = "",
+    val temp: Double = 0.0,
+    val description: String = "",
     val timestamp: Long = System.currentTimeMillis()
 )
